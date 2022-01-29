@@ -1,0 +1,65 @@
+<!--/*  Authored/Developed by: Michael Akinosho
+    Date: December 19, 2021
+    Purpose: Python Stack @ Coding Dojo*/-->
+
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Pizza Pete's</title>
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='/css/style.css') }}">
+            <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='/css/site.css') }}">
+            <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.9.2/dist/css/uikit.min.css"> -->
+            <meta charset="UTF-8">
+            <meta name="description" content="Template HTML file">
+            <meta name="keywords" content="remember to add keywords here">
+            <meta name="author" content="Michael Akinosho">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    
+    <body>
+        <header>
+            <nav class="uk-flex uk-navbar-container uk-flex-around" uk-navbar style="background-color: rgb(255, 255, 255);">
+                <h1>PIZZA PETE'S</h1>
+                <div class="uk-navbar-left">
+                    <ul class="uk-navbar-nav">
+                        <il class="uk_active uk-padding"><a href="/signup">Don't Have an Account? Sign Up Now!!</a></il>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        <main>
+            
+            <div class="uk-flex uk-overflow_auto uk-container uk-flex-center uk-column-1-2-3">
+
+                <div class="uk-padding uk-border-rounded" style="background-color:green;">
+                    {% include "login_layout.html" %}
+                    {% block login %}
+                    
+                    <h1>Welcome Back!</h1>
+                    <form class="uk-form-stacked" action="/login/user" method="POST">
+                        <div class="uk-padding-small">
+                            <label class="uk-form-label uk-text-bold uk-text-large" for="email">Email:</label>
+                            <input type="email" name="email" id="email">
+                        </div>
+                        <div class="uk-padding-small">
+                            <label class="uk-form-label uk-text-bold uk-text-large" for="password">Password:</label>
+                            <input type="password" name="password" id="password">
+                        </div>
+                        <div class="uk-padding-small">
+                            <input class="uk-width-1-1" type="submit" value="Log In">
+                        </div>
+                    </form>
+                    {% endblock %}
+                </div>
+            </div>
+        </main>
+        <footer>
+            <nav class="uk-navbar-container" uk-navbar style="background-color: rgb(255, 255, 255);">
+                
+            </nav>
+
+        </footer>
+        <script type="text/javascript" src="{{ url_for('static', filename='js/script.js') }}"></script>
+    </body>
+</html>

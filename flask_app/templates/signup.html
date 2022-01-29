@@ -1,0 +1,97 @@
+<!--/*  Authored/Developed by: Michael Akinosho
+    Date: December 19, 2021
+    Purpose: Python Stack @ Coding Dojo*/-->
+
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Pizza Pete's</title>
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='/css/style.css') }}">
+            <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='/css/site.css') }}">
+            <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.9.2/dist/css/uikit.min.css"> -->
+            <meta charset="UTF-8">
+            <meta name="description" content="Template HTML file">
+            <meta name="keywords" content="remember to add keywords here">
+            <meta name="author" content="Michael Akinosho">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    </head>
+    
+    <body>
+        <header>
+            <nav class="uk-flex uk-navbar-container uk-flex-around" uk-navbar style="background-color: rgb(255, 255, 255);">
+                <h1>PIZZA PETE'S</h1>
+                <div class="uk-navbar-left">
+                    <ul class="uk-navbar-nav">
+                        <il class="uk_active uk-padding"><a href="/">Already Have an Account? Log In </a></il>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        <main>
+            
+            <div class="uk-flex uk-overflow_auto uk-container uk-flex-center uk-column-1-2-3">
+                <div class="uk-padding uk-border-rounded" style="background-color:green;">
+                    {% include "signup_layout.html" %}
+                    {% block signup %}
+                    <h1>Sign Up Today!!</h1>
+                    <form class="uk-form-stacked" action="/signup/user" method="POST">
+                        
+                        <div class="uk-padding-small">
+                            <label class="uk-form-label uk-text-bold uk-text-large" for="fname">First Name:</label>
+                            <input class="uk-form-controls" type="text" name="fname" id="fname" value={{request.form.fname}}>
+                        </div>
+                        <div class="uk-padding-small">
+                            <label class="uk-form-label uk-text-bold uk-text-large" for="lname">Last Name:</label>
+                            <input class="uk-form-controls" type="text" name="lname" id="lname" value={{request.form.lname}}>
+                        </div>
+                        <div class="uk-padding-small">
+                            <label class="uk-form-label uk-text-bold uk-text-large" for="email">Email:</label>
+                            <input class="uk-form-controls" type="email" name="email" id="email" value={{request.form.email}}>
+                        </div>
+
+                        <div class="uk-padding-small">
+                            <label class="uk-form-label uk-text-bold uk-text-large" for="address">Address:</label>
+                            <input class="uk-form-controls" type="text" name="address" id="address" value={{request.form.address}}>
+                        </div>
+                        <div class="uk-padding-small">
+                            <label class="uk-form-label uk-text-bold uk-text-large" for="city">City:</label>
+                            <input class="uk-form-controls" type="text" name="city" id="city" value={{request.form.city}}>
+                        </div>
+                        <div class="uk-padding-small">
+                            <label class="uk-form-label uk-text-bold uk-text-large" for="state" >State:</label>
+                            <select class="uk-select uk-form-controls" type="text" name="state" id="state" value={{request.form.state}}>
+                                <option>...Select your state...</option>
+                                {% for state in all_states %}
+                                    <option>{{state.name}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="uk-padding-small">
+                            <label class="uk-form-label uk-text-bold uk-text-large" for="password">Password:</label>
+                            <input class="uk-form-controls" type="password" name="password">
+                        </div>
+                        <div class="uk-padding-small">
+                            <label class="uk-form-label uk-text-bold uk-text-large" for="confirmpassword">Confirm Password:</label>
+                            <input class="uk-form-controls" type="password" name="confirmpassword">
+                        </div>
+                        <div class="uk-padding-small">
+                            <input class="uk-width-1-1" type="submit" value="Sign Up">
+                        </div>
+                    </form>
+                    {% endblock %}
+                </div>
+
+            </div>
+        </main>
+        <footer>
+            <nav class="uk-navbar-container" uk-navbar style="background-color: rgb(255, 255, 255);">
+                
+            </nav>
+
+        </footer>
+        <script type="text/javascript" src="{{ url_for('static', filename='js/script.js') }}"></script>
+    </body>
+</html>

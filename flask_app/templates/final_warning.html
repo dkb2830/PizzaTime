@@ -1,0 +1,45 @@
+<!--/*  Authored/Developed by: Michael Akinosho
+    Date: October 19, 2021
+    Purpose: Web Fundamentals @ Coding Dojo*/-->
+
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Final Warning</title>
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='/css/style.css') }}">
+            <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='/css/site.css') }}">
+            <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.9.2/dist/css/uikit.min.css"> -->
+            <meta charset="UTF-8">
+            <meta name="description" content="Template HTML file">
+            <meta name="keywords" content="remember to add keywords here">
+            <meta name="author" content="Michael Akinosho">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    </head>
+    
+    <body>
+        <header>
+
+        </header>
+        <main>
+            
+            <div class="uk-flex uk-overflow_auto uk-container uk-flex-center">
+                <ul>
+                    <li>
+                    <h1>Stop trying to hacker our website: {{user_info['first_name']}} {{user_info['last_name']}}</h1>
+                    </li>
+                    <li>
+                    <h1>Your Computer Name has been logged: {{log_info['hostname']}}</h1>
+                    </li>
+                    <li>
+                    <h1>Your IP address has been logged: {{log_info['ip_address']}}</h1>
+                    </li>
+                </ul>
+            </div>
+        </main>
+        <footer>
+        </footer>
+        <script type="text/javascript" src="{{ url_for('static', filename='js/script.js') }}"></script>
+    </body>
+</html>
