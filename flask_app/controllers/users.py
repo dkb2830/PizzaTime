@@ -10,6 +10,9 @@ from werkzeug.datastructures import ImmutableMultiDict
 # create a regular expression object that we'll use later
 EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
 
+# List of US States
+states_JSON = [{"name":"Alabama","abbreviation":"AL"},{"name":"Alaska","abbreviation":"AK"},{"name":"Arizona","abbreviation":"AZ"},{"name":"Arkansas","abbreviation":"AR"},{"name":"California","abbreviation":"CA"},{"name":"Colorado","abbreviation":"CO"},{"name":"Connecticut","abbreviation":"CT"},{"name":"Delaware","abbreviation":"DE"},{"name":"Florida","abbreviation":"FL"},{"name":"Georgia","abbreviation":"GA"},{"name":"Hawaii","abbreviation":"HI"},{"name":"Idaho","abbreviation":"ID"},{"name":"Illinois","abbreviation":"IL"},{"name":"Indiana","abbreviation":"IN"},{"name":"Iowa","abbreviation":"IA"},{"name":"Kansas","abbreviation":"KS"},{"name":"Kentucky","abbreviation":"KY"},{"name":"Louisiana","abbreviation":"LA"},{"name":"Maine","abbreviation":"ME"},{"name":"Maryland","abbreviation":"MD"},{"name":"Massachusetts","abbreviation":"MA"},{"name":"Michigan","abbreviation":"MI"},{"name":"Minnesota","abbreviation":"MN"},{"name":"Mississippi","abbreviation":"MS"},{"name":"Missouri","abbreviation":"MO"},{"name":"Montana","abbreviation":"MT"},{"name":"Nebraska","abbreviation":"NE"},{"name":"Nevada","abbreviation":"NV"},{"name":"New Hampshire","abbreviation":"NH"},{"name":"New Jersey","abbreviation":"NJ"},{"name":"New Mexico","abbreviation":"NM"},{"name":"New York","abbreviation":"NY"},{"name":"North Carolina","abbreviation":"NC"},{"name":"North Dakota","abbreviation":"ND"},{"name":"Ohio","abbreviation":"OH"},{"name":"Oklahoma","abbreviation":"OK"},{"name":"Oregon","abbreviation":"OR"},{"name":"Pennsylvania","abbreviation":"PA"},{"name":"Rhode Island","abbreviation":"RI"},{"name":"South Carolina","abbreviation":"SC"},{"name":"South Dakota","abbreviation":"SD"},{"name":"Tennessee","abbreviation":"TN"},{"name":"Texas","abbreviation":"TX"},{"name":"Utah","abbreviation":"UT"},{"name":"Vermont","abbreviation":"VT"},{"name":"Virginia","abbreviation":"VA"},{"name":"Washington","abbreviation":"WA"},{"name":"West Virginia","abbreviation":"WV"},{"name":"Wisconsin","abbreviation":"WI"},{"name":"Wyoming","abbreviation":"WY"}]
+
 bcrypt = Bcrypt(app)
 
 @app.route("/")
@@ -19,7 +22,7 @@ def index():
 
 @app.route("/signup")
 def signup():
-    states_JSON = [{"name":"Alabama","abbreviation":"AL"},{"name":"Alaska","abbreviation":"AK"},{"name":"Arizona","abbreviation":"AZ"},{"name":"Arkansas","abbreviation":"AR"},{"name":"California","abbreviation":"CA"},{"name":"Colorado","abbreviation":"CO"},{"name":"Connecticut","abbreviation":"CT"},{"name":"Delaware","abbreviation":"DE"},{"name":"Florida","abbreviation":"FL"},{"name":"Georgia","abbreviation":"GA"},{"name":"Hawaii","abbreviation":"HI"},{"name":"Idaho","abbreviation":"ID"},{"name":"Illinois","abbreviation":"IL"},{"name":"Indiana","abbreviation":"IN"},{"name":"Iowa","abbreviation":"IA"},{"name":"Kansas","abbreviation":"KS"},{"name":"Kentucky","abbreviation":"KY"},{"name":"Louisiana","abbreviation":"LA"},{"name":"Maine","abbreviation":"ME"},{"name":"Maryland","abbreviation":"MD"},{"name":"Massachusetts","abbreviation":"MA"},{"name":"Michigan","abbreviation":"MI"},{"name":"Minnesota","abbreviation":"MN"},{"name":"Mississippi","abbreviation":"MS"},{"name":"Missouri","abbreviation":"MO"},{"name":"Montana","abbreviation":"MT"},{"name":"Nebraska","abbreviation":"NE"},{"name":"Nevada","abbreviation":"NV"},{"name":"New Hampshire","abbreviation":"NH"},{"name":"New Jersey","abbreviation":"NJ"},{"name":"New Mexico","abbreviation":"NM"},{"name":"New York","abbreviation":"NY"},{"name":"North Carolina","abbreviation":"NC"},{"name":"North Dakota","abbreviation":"ND"},{"name":"Ohio","abbreviation":"OH"},{"name":"Oklahoma","abbreviation":"OK"},{"name":"Oregon","abbreviation":"OR"},{"name":"Pennsylvania","abbreviation":"PA"},{"name":"Rhode Island","abbreviation":"RI"},{"name":"South Carolina","abbreviation":"SC"},{"name":"South Dakota","abbreviation":"SD"},{"name":"Tennessee","abbreviation":"TN"},{"name":"Texas","abbreviation":"TX"},{"name":"Utah","abbreviation":"UT"},{"name":"Vermont","abbreviation":"VT"},{"name":"Virginia","abbreviation":"VA"},{"name":"Washington","abbreviation":"WA"},{"name":"West Virginia","abbreviation":"WV"},{"name":"Wisconsin","abbreviation":"WI"},{"name":"Wyoming","abbreviation":"WY"}]
+    
     return render_template("signup.html",all_states = states_JSON)
 
 @app.route('/signup/user',methods=["POST"])
@@ -27,12 +30,12 @@ def sign_up():
     data = { "email" : request.form['email']}
     user_with_email = User.get_by_email(data)
     if user_with_email:
-        flash("Email is invalid or unable", "register")
-        return render_template("signup.html")
+        flash("Email is invalid or unable", "signup")
+        return render_template("signup.html",all_states = states_JSON)
 
     if not validate_user(request.form):
         #form_info = request.form
-        return render_template("signup.html")
+        return render_template("signup.html",all_states = states_JSON)
     
     pw_hash = bcrypt.generate_password_hash(request.form['password'])
     
@@ -64,7 +67,6 @@ def login():
         return redirect("/")
 
     session['id'] = user.id
-    session['user_fullname'] = str(user.first_name) + str(user.last_name)
 
     return redirect("/user/quick_options")
 
@@ -76,25 +78,51 @@ def show_options():
         
     }
     user = User.get_by_id(data)
-    favorite_order = Order.get_favorite_order(user)
     
-    return render_template("/user/quick_options.html", favorite_order = favorite_order)
+    my_fave = []
+    if user.favorite_order != '':
+        data = {
+            "id":user.favorite_order
+        }
+    favorite_order = User.get_favorite_order(data)
+    my_fave.append(favorite_order)
+    return render_template("/user/quick_options.html",favorite_order = my_fave)
 
-@app.route('/user/craft_a_pizza')
-def start_order():
-    data = {'id': session['id']}
-    one_user = User.get_by_id(data)
-    purchases = User.get_purchases_by_user(data)
+@app.route('/user/order')
+def your_order():
+    print(session['id'])
+    data = {
+        "id": session['id']
+        
+    }
+    user = User.get_by_id(data)
     
-    for purchase in purchases:
-        one_user.purchases.append(purchase)
-    return render_template("/user/user_purchases.html",one_user = one_user)
-    
-#Open blank form to populate with sighting information
-@app.route('/new/car')
-def new_car():
-    return render_template("/user/new_car.html")
+    my_fave = []
+    if user.favorite_order != '':
+        data = {
+            "id":user.favorite_order
+        }
+    favorite_order = User.get_favorite_order(data)
+    my_fave.append(favorite_order)
+    return render_template("/user/your_order.html",favorite_order = my_fave)
 
+@app.route('/user/account')
+def update_account():
+    print(session['id'])
+    data = {
+        "id": session['id']
+        
+    }
+    user = User.get_by_id(data)
+    
+    my_fave = []
+    if user.favorite_order != '':
+        data = {
+            "id":user.favorite_order
+        }
+    favorite_order = User.get_favorite_order(data)
+    my_fave.append(favorite_order)
+    return render_template("/user/account_info.html",favorite_order = my_fave)
 
 
 @app.route('/logout')

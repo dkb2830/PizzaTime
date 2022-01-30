@@ -34,11 +34,11 @@
         </header>
         
         <main>
-            <div class="uk-flex uk-border-rounded uk-margin-xlarge-left uk-margin-xlarge-right uk-flex-column uk-padding" style="background-color: lightpink;">
-                    <div class="uk-flex uk-flex-center"><h1>QUICK OPTIONS</h1></div>
+            <div class="uk-flex uk-border-rounded uk-margin-xlarge-left uk-margin-xlarge-right uk-flex-column uk-padding" style="background-color: yellowgreen;">
+                    <div class="uk-flex uk-flex-center"><h1>Account Info</h1></div>
                     <div class="uk-flex uk-flex-center uk-column-1-2-3">
                         <div class="uk-padding-small uk-border-rounded" style="background-color:lightcyan;">
-                            <form class="uk-form-stacked" action="/user/new_order">
+                            <form class="uk-form-stacked" action="/user/new_order" method="POST">
                                 <div>
                                     <textarea class="uk-textarea uk-border-rounded uk-text-large" id="new_order" name="new_order" rows="6" readonly>The rain in Spain stays mainly on the plain.</textarea>
                                 </div>
@@ -49,7 +49,7 @@
                         </div>
                         {% for fave in favorite_order %}
                         <div class="uk-padding-small uk-border-rounded" style="background-color:lightcyan;">
-                            <form class="uk-form-stacked" action="/user/favorite_order">
+                            <form class="uk-form-stacked" action="/user/favorite_order" method="POST">
                                 <div>
                                     <textarea class="uk-textarea uk-border-rounded uk-text-large" id="favorite_order" name="favorite_order" rows="6" readonly>{{fave.method}},{{fave.quantity}},{{fave.toppings}}</textarea>
                                 </div>
@@ -60,9 +60,9 @@
                         </div>
                         {% endfor %}
                         <div class="uk-padding-small uk-border-rounded" style="background-color:lightcyan;">
-                                <form class="uk-form-stacked" action="/user/random_order">
+                                <form class="uk-form-stacked" action="/user/random_order" method="POST">
                                     <div>
-                                        <textarea class="uk-textarea uk-border-rounded uk-text-large" id="random_order" name="random_order" rows="6" readonly>Don't go chasing waterfalls. Stick to the rivers and streams you are used to...</textarea>
+                                        <textarea class="uk-textarea uk-border-rounded uk-text-large" id="random_order" name="random_order" rows="6" readonly>The rain in Spain stays mainly on the plain.</textarea>
                                     </div>
                                     <div class="uk-padding-small">
                                         <input class="uk-width-1-1 uk-text-bold" type="submit" value="Surprise Me">

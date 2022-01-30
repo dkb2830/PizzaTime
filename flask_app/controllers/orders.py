@@ -7,8 +7,14 @@ from datetime import *
 
 import socket
 
-@app.route('/add_order',methods=['POST'])
-def report_sighting():
+@app.route('/user/new_order')
+@app.route('/user/favorite_order')
+@app.route('/user/random_order')
+def start_craft_a_pizza():
+    return render_template("/user/craft_a_pizza.html")
+
+@app.route('/user/send_order',methods=['POST'])
+def send_order_details():
     stop_hack(request.form['user_id'],session['id'])
     # end of code block identifying and logging out the hacker
     
@@ -19,6 +25,7 @@ def report_sighting():
         'method':request.form['method'],
         'size':request.form['size'],
         'crust':request.form['crust'],
+        'quantity':request.form['quantity'],
         'toppings': request.form['toppings'],
         'user_id': int(session['id'])
     }
@@ -27,27 +34,8 @@ def report_sighting():
     
     return redirect("/user/dashboard")
 
-@app.route('/update_order',methods=['POST'])
-def update_sighting():
-    stop_hack(request.form['user_id'],session['id'])
-    
-    if not validate_order(request.form):
-        
-        return redirect(f"/user/edit_order/{request.form['order_id']}")
-    
-    data = {
-        'id': request.form['order_id'],
-        'method':request.form['method'],
-        'size':request.form['size'],
-        'crust':request.form['crust'],
-        'toppings': request.form['toppings']
-    }
-    Order.update_order(data)
-    
-    return redirect("/user/dashboard")
-
-@app.route('/delete_order',methods=['POST'])
-def delete_sighting():
+@app.route('/user/delete_order',methods=['POST'])
+def delete_user_order():
     stop_hack(request.form['user_id'],session['id'])
     
     data = {'id': request.form['order_id']}
@@ -91,7 +79,7 @@ def validate_order ( order ):
         flash("Crust is blank","order")
         is_valid = False
         
-    if len(order['qty']) < 1 or order['qty'].isspace():
+    if len(order['quantity']) < 1 or order['quantity'].isspace():
         flash("Quantity is less than 1","order")
         is_valid = False
 

@@ -6,13 +6,14 @@ class User:
     db = 'pizza_petes'
     def __init__( self , data ):
         self.id = data['id']
-        self.first_name = data['first_name']
-        self.last_name = data['last_name']
+        self.firstname = data['firstname']
+        self.lastname = data['lastname']
         self.email = data['email']
         self.address = data['address']
         self.city = data['city']
         self.state = data['state']
         self.password = data['password']
+        self.favorite_order = ''
         self.created_at = ''
         self.updated_at = ''
     # Now we use class methods to query our database
@@ -24,11 +25,12 @@ class User:
         query = "SELECT * FROM users WHERE id = %(id)s;"
         results = connectToMySQL(cls.db).query_db( query, data)
         
+        print(results[0])
         return cls(results[0])
         
     @classmethod
     def save(cls, data ):
-        query = "INSERT INTO users ( first_name , last_name , email, password, address, city, state) VALUES ( %(fname)s , %(lname)s , %(email)s, %(password)s, %(address)s, %(city)s, %(state)s);"
+        query = "INSERT INTO users ( firstname , lastname , email, password, address, city, state) VALUES ( %(fname)s , %(lname)s , %(email)s, %(password)s, %(address)s, %(city)s, %(state)s);"
         # data is a dictionary that will be passed into the save method from server.py
         return connectToMySQL(cls.db).query_db( query, data )
     
@@ -54,6 +56,11 @@ class User:
         return connectToMySQL(cls.db).query_db(query, data)
     
     @classmethod
-    def get_user_favorite(cls, data):
-        query = "SELECT orders.* FROM orders WHERE orders.id = %(favorite_order)s"
-        return connectToMySQL(cls.db).query_db(query, data)
+    def get_favorite_order(cls, data):
+        query = "SELECT orders.* FROM orders WHERE orders.id = %(id)s"
+        results = connectToMySQL(cls.db).query_db(query, data)
+        
+        if len(results) < 1:
+            return False
+        
+        return Order(results[0])

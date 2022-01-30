@@ -11,7 +11,7 @@ class Order:
         self.size = data['size']
         self.crust = data['crust']
         self.quantity = data['quantity']
-        self.toppings = []
+        self.toppings = ''
         self.created_at = ''
         self.updated_at = ''
         self.order_total = float(0)

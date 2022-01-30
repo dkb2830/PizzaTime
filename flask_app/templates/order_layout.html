@@ -1,0 +1,12 @@
+{% with messages = get_flashed_messages(with_categories=true) %}
+    <!-- declare a variable called messages -->
+    {% if messages %}
+        <!-- check if there are any messages -->
+        {% for category, message in messages %}
+            <!-- loop through the messages -->
+            {% if category == 'order' %}
+                <p style="color:red; font-weight: bold;" class = "{{category}}">{{message}}</p> <!-- display each message in a paragraph tag -->
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+{% endwith %}{% block car %}{% endblock %}
